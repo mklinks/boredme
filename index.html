@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XAMPP Database Tutorial</title>
+
+  <!-- Poppins Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #fdfaf5; /* dirty white */
+      color: #1a1a1a;
+      font-family: 'Poppins', sans-serif;
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1 { color: #1e90ff; text-align: center; font-weight: 600; margin-bottom: 40px; }
+    h2 { color: #1e90ff; margin-top: 40px; }
+    p { font-size: 18px; line-height: 1.6; }
+    img { border: 2px solid #1e90ff; border-radius: 8px; margin: 15px 0; max-width: 100%; }
+    code { background-color: #eae6df; color: #1e90ff; padding: 2px 6px; border-radius: 4px; font-family: 'Poppins', monospace; display: block; margin: 10px 0; }
+    a { color: #1e90ff; text-decoration: none; font-weight: 600; }
+    hr { border: 1px solid #1e90ff; margin: 50px 0; }
+  </style>
+</head>
+<body>
+
+  <h1>XAMPP Database Tutorial</h1>
+
+  <!-- Step 1: Create Database -->
+  <h2>Step 1: Create a Database</h2>
+  <p>Use your <strong>family name</strong> for the database name.</p>
+  <p>Example: Gamao_DB</p>
+  
+  <ol>
+    <li>Open XAMPP and click <strong>Start</strong> on the MySQL module.</li>
+    <img src="images/mysql_start.png" alt="Start MySQL in XAMPP">
+    
+    <li>Click <strong>Shell</strong> and type: <code>mysql -u root -p</code> then press Enter.</li>
+    <img src="images/shell_open.png" alt="Open XAMPP Shell">
+        <img src="images/shell_opened.png" alt="Open XAMPP Shell">
+
+    
+    <li>Press <strong>Space</strong> for a blank password and Enter.</li>
+    <img src="images/blank_password.png" alt="Blank password">
+    
+    <li>Type: <code>show databases;</code> and press Enter to see existing databases.</li>
+    <img src="images/show_databases.png" alt="Show databases">
+    
+    <li>Create your database (replace with your family name): <code>create database gamao_db;</code></li>
+    <img src="images/create_database.png" alt="Create database">
+    
+    <li>Press the <strong>Up Arrow</strong> key to reuse <code>show databases;</code> and verify creation.</li>
+    <img src="images/check_database.png" alt="Verify database creation">
+    
+    <li>Type: <code>use gamao_db;</code> to start using your database.</li>
+    <img src="images/use_database.png" alt="Use database">
+  </ol>
+<hr>
+ <!-- Step 1.5: Check for Existing Tables -->
+  <h2>Check Existing Tables</h2>
+  <p>After selecting your database using use gamao_db;</p>
+  <p>You can check if there are already existing tables.</p>
+  
+  <pre>show tables;</pre>
+  
+  <p>If no tables exist, the result will be empty. If tables already exist, they will be listed here.  
+  If the database is empty, you can proceed to create the tables below.</p>
+  
+  <hr>
+
+  <!-- Step 2: Create Tables -->
+  <h2>Step 2: Create Tables</h2>
+
+   <h3>Guests Table</h3>
+  <pre>
+CREATE TABLE guests (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, first_name VARCHAR(100) 
+NOT NULL, last_name VARCHAR(100) NOT NULL, email VARCHAR(150), phone VARCHAR(25), created_at 
+TIMESTAMP DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  </pre>
+
+  <h3>Rooms Table</h3>
+  <pre>
+CREATE TABLE rooms (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, room_number VARCHAR(10) NOT NULL UNIQUE, 
+type VARCHAR(50), price DECIMAL(8,2) DEFAULT 0.00,status ENUM('available','occupied','maintenance') 
+DEFAULT 'available') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  </pre
+
+  <h3>Reservations Table</h3>
+  <pre>
+CREATE TABLE reservations (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, guest_id INT UNSIGNED NOT NULL, room_id INT UNSIGNED NOT NULL, 
+check_in DATE, check_out DATE, total DECIMAL(8,2) DEFAULT 0.00, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (guest_id) 
+REFERENCES guests(id) ON DELETE CASCADE,FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  </pre>
+      <img src="images/allcodes.png" alt="Check if all codes are correct.">
+<hr>
+  <h3>Guests Table</h3>
+<p>Click to download: <a href="notes/guests.sql" download>Download Guests SQL</a></p>
+<h3>Rooms Table</h3>
+<p>Click to download: <a href="notes/rooms.sql" download>Download Rooms SQL</a></p>
+<h3>Reservations Table</h3>
+<p>Click to download: <a href="notes/reservations.sql" download>Download Reservations SQL</a></p>
+
+  <p>Make sure that Query OK, 0 rows affected (example: 0.034 sec) shows.</p>
+
+  <hr>
+
+  <!-- Step 3: Add Values -->
+  <h2>Step 3: Add Values</h2>
+  <p>Paste the right code on the shell and enter using the codes below.</p>
+  <p>Values added below are just examples.</p>
+
+  <h3>Insert Guest</h3>
+  <pre>
+INSERT INTO guests (first_name, last_name, email, phone) VALUES ('Daniel', 'Padilla', 'dangwapo143@gmail.com', '09090909091');
+  </pre>
+
+  <h3>Insert Room</h3>
+  <pre>
+INSERT INTO rooms (room_number, type, price, status) VALUES ('101', 'Single', '1200.00', 'available');
+  </pre>
+
+  <h3>Insert Reservation</h3>
+  <pre>
+INSERT INTO reservations (guest_id, room_id, check_in, check_out, total, created_at) VALUES (1, 1, '2025-09-20', '2025-09-22', 2400.00, '2025-09-16 05:41:17');
+  </pre>
+  <hr>
+  <p>The image below shows an example of inserting values into the tables and the final outcome after adding all the designated values</p>
+    <img src="images/testintoguests.png" alt="Example of adding values.">
+        <img src="images/addedvalues.png" alt="Example of adding values.">
+
+<hr>
+
+</body>
+</html>
